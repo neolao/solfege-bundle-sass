@@ -39,14 +39,14 @@ proto.overrideConfiguration = function*(customConfiguration)
  * @param   {Object}    options     The options
  * @return  {String}                The generated CSS
  */
-proto.renderFile = function(filePath, options)
+proto.renderFile = function*(filePath, options)
 {
     var self = this;
 
     // Use the configuration file is the options is not provided
     options = options || this.configuration;
 
-    return function(done)
+    var css = yield function(done)
     {
         sass.render({
             file: filePath,
@@ -59,6 +59,8 @@ proto.renderFile = function(filePath, options)
             outputStyle: options.outputStyle
         });
     };
+
+    return css;
 };
 
 module.exports = Engine;
